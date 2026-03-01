@@ -366,7 +366,7 @@ function SLabel({ num, text }) {
 }
 
 // ─── MAIN ──────────────────────────────────────────────────────────────────
-export default function Portfolio() {
+export default function App() {
   const [scrollY, setScrollY] = useState(0);
   useEffect(() => { const fn = () => setScrollY(window.scrollY); window.addEventListener("scroll", fn); return () => window.removeEventListener("scroll", fn); }, []);
 
