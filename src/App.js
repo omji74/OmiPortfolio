@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Github, Linkedin, ExternalLink, Code2, Link, Briefcase,  ArrowUpRight,  MessageSquare, Tent, Server } from "lucide-react";
+import { Github, Linkedin, ExternalLink, Code2, Link, Briefcase,  ArrowUpRight,  MessageSquare, Tent,Trophy, Server } from "lucide-react";
 
 // ─── PALETTE ───────────────────────────────────────────────────────────────
 const C = {
@@ -341,6 +341,53 @@ function AchCard({ a, i }) {
     </FadeIn>
   );
 }
+function LeetCodeDashboard() {
+  const [stats, setStats] = useState({ total: 0, easy: 0, medium: 0, hard: 0, ranking: "..." });
+  const USERNAME = "omji74";
+
+  useEffect(() => {
+    async function fetchLeetData() {
+      try {
+        const solvedRes = await fetch(`https://alfa-leetcode-api.onrender.com/${USERNAME}/solved`);
+        const sData = await solvedRes.json();
+        const profileRes = await fetch(`https://alfa-leetcode-api.onrender.com/${USERNAME}`);
+        const pData = await profileRes.json();
+
+        setStats({
+          total: sData.solvedProblem || 0,
+          easy: sData.easySolved || 0,
+          medium: sData.mediumSolved || 0,
+          hard: sData.hardSolved || 0,
+          ranking: pData.ranking || "N/A"
+        });
+      } catch (err) { console.error("LeetCode Fetch Error", err); }
+    }
+    fetchLeetData();
+  }, []);
+
+  const Row = ({ label, val, color }) => (
+    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: '0.75rem', fontFamily: 'monospace' }}>
+      <span style={{ color: C.muted }}>{label}</span>
+      <span style={{ color: color || C.text, fontWeight: 600 }}>{val}</span>
+    </div>
+  );
+
+  return (
+    <div style={{ width: '100%', background: 'rgba(0,0,0,0.2)', padding: '16px', borderRadius: 12, border: `1px solid ${C.border}`, marginTop: 15 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, borderBottom: `1px solid ${C.border}`, paddingBottom: 8 }}>
+        <Trophy size={14} color={C.yellow} />
+        <span style={{ fontSize: '0.7rem', fontWeight: 800, letterSpacing: '0.1em' }}>LEETCODE LIVE</span>
+      </div>
+      <Row label="Rank" val={`#${stats.ranking}`} color={C.cyan} />
+      <Row label="Solved" val={stats.total} />
+      <div style={{ height: 1, background: C.border, margin: '8px 0' }} />
+      <Row label="Easy" val={stats.easy} color={C.green} />
+      <Row label="Medium" val={stats.medium} color={C.yellow} />
+      <Row label="Hard" val={stats.hard} color={C.pink} />
+    </div>
+  );
+}
+
 
 // ─── CURSOR ────────────────────────────────────────────────────────────────
 function Cursor() {
@@ -469,16 +516,42 @@ export default function App() {
           </div>
 
           {/* Avatar */}
-          <FadeIn delay={0.25} dir="left">
-            <div style={{ animation: "float 5s ease-in-out infinite" }}>
-              <div style={{ width: 210, height: 270, borderRadius: 24, background: `linear-gradient(135deg,${C.surface},${C.card})`, border: `1px solid ${C.border}`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", boxShadow: `0 40px 80px ${C.green}18, 0 0 0 1px ${C.border}` }}>
-                <div style={{ position: "absolute", inset: 0, background: G.main, opacity: 0.04 }} />
-                <div style={{ width: 90, height: 90, borderRadius: "50%", background: G.main, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", fontFamily: "'Syne',sans-serif", fontWeight: 800, color: "#000", marginBottom: 14, boxShadow: `0 0 30px ${C.green}44` }}>OJ</div>
-                <div style={{ fontFamily: "'Syne',sans-serif", fontWeight: 700, fontSize: "0.95rem", marginBottom: 4 }}>Om Ji Dwivedi</div>
-                <div style={{ fontSize: "0.65rem", fontFamily: "monospace", color: C.green, marginBottom: 16, letterSpacing: "0.04em" }}>CS Engineer</div>
-                <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: C.muted }}>+91 90843 74321</div>
-                <div style={{ fontSize: "0.62rem", fontFamily: "monospace", color: C.muted, marginTop: 3 }}>omjidwivedi49@gmail.com</div>
-                <div style={{ position: "absolute", bottom: -12, right: -12, background: C.surface, border: `1px solid ${C.green}33`, borderRadius: 10, padding: "5px 11px", fontSize: "0.6rem", fontFamily: "monospace", color: C.green, boxShadow: `0 8px 24px ${C.green}18` }}>⚡ 500+ LeetCode</div>
+              <FadeIn delay={0.3} dir="left">
+            <div style={{ animation: "float 6s ease-in-out infinite" }}>
+              <div style={{ 
+                background: C.card, 
+                border: `1px solid ${C.border}`, 
+                borderRadius: 24, 
+                padding: "35px 25px", 
+                textAlign: "center", 
+                boxShadow: "0 30px 60px rgba(0,0,0,0.6)",
+                position: "relative"
+              }}>
+                <div style={{ 
+                  width: 110, height: 110, borderRadius: "50%", 
+                  border: `2px solid ${C.green}`, padding: 4, 
+                  margin: "0 auto 15px", overflow: "hidden",
+                  boxShadow: `0 0 20px ${C.green}33`
+                }}>
+                  <img 
+                    src="data:image/jpeg;base64,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" 
+                    alt="Avatar" 
+                    style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} 
+                  />
+                </div>
+                <h2 style={{ fontSize: "1.3rem", fontWeight: 700, color: C.text }}>Om Ji Dwivedi</h2>
+                <p style={{ fontSize: "0.7rem", color: C.green, fontFamily: "monospace", letterSpacing: "0.1em" }}>CS ENGINEER</p>
+                
+                <LeetCodeDashboard />
+
+                <div style={{ 
+                  position: "absolute", bottom: -12, right: 20, 
+                  background: C.bg, border: `1px solid ${C.green}44`, 
+                  borderRadius: 8, padding: "4px 12px", fontSize: "0.6rem", 
+                  fontFamily: "monospace", color: C.green 
+                }}>
+                  STATUS: ACTIVE
+                </div>
               </div>
             </div>
           </FadeIn>
